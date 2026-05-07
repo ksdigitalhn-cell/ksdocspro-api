@@ -1,12 +1,9 @@
 {
-  "name": "ksdocspro-api",
+  "name": "ksdocspro-web",
   "version": "1.0.0",
-  "description": "KS Docs Pro — API Server",
-  "type": "module",
+  "description": "KS Docs Pro — Frontend (archivos estáticos compilados)",
   "scripts": {
-    "start": "node --enable-source-maps ./index.mjs"
+    "serve": "npx serve -s . -l 3000"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "note": "Sirve estos archivos con Nginx u cualquier servidor estático. No requiere Node.js en producción."
 }
