@@ -1,0 +1,12 @@
+{
+  "name": "ksdocspro-api",
+  "version": "1.0.0",
+  "description": "KS Docs Pro — API Server",
+  "type": "module",
+  "scripts": {
+    "start": "node --enable-source-maps ./index.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

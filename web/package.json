@@ -1,0 +1,9 @@
+{
+  "name": "ksdocspro-web",
+  "version": "1.0.0",
+  "description": "KS Docs Pro — Frontend (archivos estáticos compilados)",
+  "scripts": {
+    "serve": "npx serve -s . -l 3000"
+  },
+  "note": "Sirve estos archivos con Nginx u cualquier servidor estático. No requiere Node.js en producción."
+}
