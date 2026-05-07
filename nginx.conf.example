@@ -1,0 +1,59 @@
+# ============================================================
+# Nginx — Configuración para KS Docs Pro
+# Coloca esto en /etc/nginx/sites-available/ksdocspro
+# Luego: sudo ln -s /etc/nginx/sites-available/ksdocspro /etc/nginx/sites-enabled/
+# ============================================================
+
+server {
+    listen 80;
+    server_name tu-dominio.com www.tu-dominio.com;
+
+    # Redirigir todo HTTP → HTTPS (descomentar si tienes SSL)
+    # return 301 https://$host$request_uri;
+
+    # Archivos estáticos del frontend (React)
+    root /var/www/ksdocspro/web;
+    index index.html;
+
+    # Rutas del API → Node.js
+    location /api/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_cache_bypass $http_upgrade;
+
+        # Importante para SSE (streaming de IA)
+        proxy_buffering off;
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+        chunked_transfer_encoding on;
+    }
+
+    # Todo lo demás → React (SPA routing)
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+# ============================================================
+# HTTPS con Let's Encrypt (opcional pero recomendado)
+# sudo apt install certbot python3-certbot-nginx
+# sudo certbot --nginx -d tu-dominio.com -d www.tu-dominio.com
+# ============================================================
+# server {
+#     listen 443 ssl;
+#     server_name tu-dominio.com www.tu-dominio.com;
+#     ssl_certificate /etc/letsencrypt/live/tu-dominio.com/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/tu-dominio.com/privkey.key;
+#     root /var/www/ksdocspro/web;
+#     index index.html;
+#     location /api/ {
+#         proxy_pass http://127.0.0.1:8080;
+#         proxy_buffering off;
+#         proxy_read_timeout 300s;
+#     }
+#     location / { try_files $uri $uri/ /index.html; }
+# }
